@@ -17,7 +17,7 @@ export class SearchComponent implements OnInit {
       .subscribe(par=>{
 
         this.productoService.buscarProducto(par['termino']);
-      console.log(par['termino']);
+      
     })
   }
 

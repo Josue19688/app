@@ -16,13 +16,13 @@ export class ProductosService {
 
   private cargarInfo(){
 
-    return new Promise((resolve, reject)=>{
+    return new Promise<void>((resolve, reject)=>{
       this.http.get<Producto[]>('https://angular-portafolio-2f5fa-default-rtdb.firebaseio.com/producto_idx.json')
       .subscribe((resp : Producto[])=>{
         
         this.productos=resp;
         this.cargada=false;
-    
+        resolve();
       
       })
     })
@@ -38,15 +38,21 @@ export class ProductosService {
       this.cargarInfo().then(()=>{
         this.filtrarProductos(termino);
       });
+    }else{
+      this.filtrarProductos(termino);
     }
    
     
   }
 
   private filtrarProductos(termino:string ){
+    this.productoFiltrado=[];
+    termino = termino.toLowerCase();
     this.productos.forEach(prod=>{
-      if(prod.categoria.indexOf(termino)>=0){
+      const tituloLower =prod.titulo.toLowerCase(); 
+      if(prod.categoria.indexOf(termino)>=0 || tituloLower.indexOf(termino)>=0){
         this.productoFiltrado.push(prod);
+        
       }
     })
   }
